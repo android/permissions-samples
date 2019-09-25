@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    google()
+    jcenter()
+}
+
+dependencies {
+    compile "com.android.support:support-v4:27.0.2"
+    compile "com.android.support:support-v13:27.0.2"
+    compile "com.android.support:cardview-v7:27.0.2"
+    compile "com.android.support:appcompat-v7:27.0.2"
+    compile 'com.android.support:design:27.0.2'
+}
+
+List<String> dirs = ['main']
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 27
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    sourceSets {
+        main {
+            dirs.each { dir ->
+                java.srcDirs "src/${dir}/java"
+                res.srcDirs "src/${dir}/res"
+            }
+        }
+        androidTest.setRoot('tests')
+        androidTest.java.srcDirs = ['tests/src']
+
+    }
+}
