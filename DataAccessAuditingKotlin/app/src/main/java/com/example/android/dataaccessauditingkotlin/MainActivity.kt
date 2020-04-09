@@ -17,7 +17,6 @@ package com.example.android.dataaccessauditingkotlin
 
 import android.Manifest
 import android.app.AppOpsManager
-import android.app.AppOpsManager.AppOpsCollector
 import android.app.AsyncNotedAppOp
 import android.app.SyncNotedAppOp
 import android.content.pm.PackageManager
@@ -38,14 +37,14 @@ private const val TAG = "MainActivity"
 private const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
 
 /**
- * Audits/Logs protected data via the {@link android.app.AppOpsManager.AppOpsCollector} APIs.
+ * Audits/Logs protected data via the {@link android.app.AppOpsManager.OnOpNotedCallback} APIs.
  *
  * Protected data is data that's protected by runtime or app op permissions. Your app will not have
  * access to this data until the user has granted your app access. Examples include location,
  * contacts, etc.
  *
  * <p>
- * The {@link android.app.AppOpsManager.AppOpsCollector} provides three callbacks:
+ * The {@link android.app.AppOpsManager.OnOpNotedCallback} provides three callbacks:
  * <ul>
  * <li>onNoted - Called when protected data is accessed via a synchronous call. For example, onNoted
  * would be triggered if an app requested the user's last known location and that function returns
@@ -67,7 +66,7 @@ private const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
  * calls to the location APIs when they aren't needed and other reasons. You would still
  * want to audit access of this protected data even though it is indirect. In this use
  * case, you would use the {@link android.app.AppOpsManager#noteProxyOp}. (This is especially
- * helpful when blaming another feature id.)
+ * helpful when blaming another attribution tag.)
  *
  * If your app is the initial data provider, you want to use
  * {@link android.app.AppOpsManager#noteOp}. For our sample, we will use
@@ -84,15 +83,16 @@ class MainActivity : AppCompatActivity() {
     private val opsNotedForThisApp: MutableList<Pair<String, String>> = mutableListOf()
 
     // Most external libraries (local or third party) require a context. When passing that context,
-    // you should set a feature id/context as done below. This makes it easier to determine which
-    // part of your app is accessing protected data (done in this sample via the AppOpsCollector).
+    // you should set a attribution tag/context as done below. This makes it easier to determine
+    // which part of your app is accessing protected data (done in this sample via the
+    // OnOpNotedCallback).
     private val shoppingLibrary by lazy {
-        val specializedContextWithFeatureId =
-            applicationContext.createFeatureContext("Shopping 3rd party library")
-        ShoppingLibrary(specializedContextWithFeatureId)
+        val specializedContextWithAttributionTag =
+            applicationContext.createAttributionContext("Shopping 3rd party library")
+        ShoppingLibrary(specializedContextWithAttributionTag)
     }
 
-    private val appOpsCollector = object: AppOpsCollector() {
+    private val onOpNotedCallback = object: AppOpsManager.OnOpNotedCallback() {
 
         // Saves and logs information.
         // Potentially called from different threads, so synchronized. Could be further optimized to
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
          */
         override fun onNoted(operation: SyncNotedAppOp) {
             val operationDescription =
-                prettyOperationDescription("onNoted()", operation.op, operation.featureId)
+                prettyOperationDescription("onNoted()", operation.op, operation.attributionTag)
 
             val prettyStackTrace = prettyStackTrack(Thread.currentThread().stackTrace)
 
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
          */
         override fun onAsyncNoted(asyncOp: AsyncNotedAppOp) {
             val operationDescription =
-                prettyOperationDescription("onAsyncNoted()", asyncOp.op, asyncOp.featureId)
+                prettyOperationDescription("onAsyncNoted()", asyncOp.op, asyncOp.attributionTag)
 
             // For an AsyncNotedAppOp, it's more effective to use the 'message' field instead of
             // retrieving the stack trace of the current thread to identify the call.
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
          */
         override fun onSelfNoted(operation: SyncNotedAppOp) {
             val operationDescription =
-                prettyOperationDescription("onSelfNoted()", operation.op, operation.featureId)
+                prettyOperationDescription("onSelfNoted()", operation.op, operation.attributionTag)
 
             val prettyStackTrace = prettyStackTrack(Thread.currentThread().stackTrace)
 
@@ -179,12 +179,11 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        // Assigns application operation collector to receive updates on operations.
+        // Assigns noted operations callback to receive updates on operations.
         // Note: If you want to provide constant, global tracking, you should call
-        // {@link android.app.AppOpsManager.AppOpsCollector#setNotedAppOpsCollector} at the
-        // Application level.
+        // {@link android.app.AppOpsManager#setOnOpNotedCallback} at the Application level.
         val applicationOperationManager = getSystemService(AppOpsManager::class.java)
-        applicationOperationManager?.setNotedAppOpsCollector(appOpsCollector)
+        applicationOperationManager?.setOnOpNotedCallback(mainExecutor, onOpNotedCallback)
     }
 
     override fun onResume() {
@@ -315,7 +314,7 @@ class MainActivity : AppCompatActivity() {
      * noteOp() method below to audit data usage.
      *
      * This is a rare use case. For most data access auditing, you will simply assign an
-     * AppOpsCollector and listen for protected data usage (tracked by the system).
+     * OnOpNotedCallback and listen for protected data usage (tracked by the system).
      */
     fun onClickManuallyNoteOperation(view: View) {
 
@@ -341,8 +340,8 @@ class MainActivity : AppCompatActivity() {
     private fun prettyOperationDescription(
         methodName: String,
         operation: String,
-        featureId: String?
-    ) = "$methodName: $operation, feature id: ${featureId ?: "NONE"}"
+        attributionTag: String?
+    ) = "$methodName: $operation, Attribution Tag: ${attributionTag ?: "NONE"}"
 
     private fun prettyStackTrack(stackTraceElements: Array<StackTraceElement>): String {
         return stackTraceElements.joinToString("\n", "Stack Trace:\n", "\n") { "\t$it" }
