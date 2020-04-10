@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         ShoppingLibrary(specializedContextWithAttributionTag)
     }
 
-    private val onOpNotedCallback = object: AppOpsManager.OnOpNotedCallback() {
+    private val onOpNotedCallback = object : AppOpsManager.OnOpNotedCallback() {
 
         // Saves and logs information.
         // Potentially called from different threads, so synchronized. Could be further optimized to

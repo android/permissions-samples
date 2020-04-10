@@ -20,7 +20,6 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Looper
 import com.example.android.internallibrary.hasPermission
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
