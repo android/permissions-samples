@@ -60,14 +60,6 @@ private const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
  * the system. It's a way for apps to to blame themselves when they feel like they are accessing
  * protected data and want to audit it.
  *
- * For example, you could have a very large app that uses a central data class for all
- * location data. That central class would access location via the location APIs (after
- * user approval) and cache that data for all other modules in your application to minimize
- * calls to the location APIs when they aren't needed and other reasons. You would still
- * want to audit access of this protected data even though it is indirect. In this use
- * case, you would use the {@link android.app.AppOpsManager#noteProxyOp}. (This is especially
- * helpful when blaming another attribution tag.)
- *
  * If your app is the initial data provider, you want to use
  * {@link android.app.AppOpsManager#noteOp}. For our sample, we will use
  * {@link android.app.AppOpsManager#noteOp}.
@@ -154,13 +146,6 @@ class MainActivity : AppCompatActivity() {
          *  to manually trigger a protected data access. This is the only callback that isn't
          *  triggered by the system. It's a way for apps to to blame themselves when they feel like
          *  they are accessing protected data and want to audit it.
-         *
-         *  For example, you could have a very large app that uses a central data class for all
-         *  location data. That central class would access location via the location APIs (after
-         *  user approval) and cache that data for all other modules in your application to minimize
-         *  calls to the location APIs when they aren't needed and other reasons. You would still
-         *  want to audit access of this protected data even though it is indirect. In this use
-         *  case, you would use the {@link android.app.AppOpsManager#noteOp}.
          *
          *  It's a fairly uncommon use case, so in most cases, you won't need to do this.
          */
@@ -307,11 +292,6 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * AppOpsManager.noteOp() allows you to manually note an operation.
-     *
-     * Use case: Large app communicates protected data to another app under the same company, but
-     * the receiving app may not access the protected data directly, i.e., the other app passes the
-     * protected data to it. The app that isn't accessing the protected data directly uses the
-     * noteOp() method below to audit data usage.
      *
      * This is a rare use case. For most data access auditing, you will simply assign an
      * OnOpNotedCallback and listen for protected data usage (tracked by the system).
