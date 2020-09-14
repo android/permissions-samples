@@ -20,41 +20,60 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.android.basicpermissions.camera.CameraPreviewActivity
-import com.example.android.basicpermissions.util.checkSelfPermissionCompat
-import com.example.android.basicpermissions.util.requestPermissionsCompat
-import com.example.android.basicpermissions.util.shouldShowRequestPermissionRationaleCompat
 import com.example.android.basicpermissions.util.showSnackbar
-
-const val PERMISSION_REQUEST_CAMERA = 0
+import com.google.android.material.snackbar.Snackbar
 
 /**
- * Launcher Activity that demonstrates the use of runtime permissions for Android M.
+ * Launcher Activity that demonstrates the use of runtime permissions for Android.
  * This Activity requests permissions to access the camera
  * ([android.Manifest.permission.CAMERA])
  * when the 'Show Camera Preview' button is clicked to start  [CameraPreviewActivity] once
  * the permission has been granted.
  *
- * <p>First, the status of the Camera permission is checked using [ActivityCompat.checkSelfPermission]
+ * <p>First, the status of the Camera permission is checked using [ContextCompat.checkSelfPermission]
  * If it has not been granted ([PackageManager.PERMISSION_GRANTED]), it is requested by
- * calling [ActivityCompat.requestPermissions]. The result of the request is
+ * calling [ActivityResultContracts.RequestPermission]. The result of the request is
  * returned to the
- * [android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback], which starts
+ * [androidx.activity.result.ActivityResultCaller.registerForActivityResult], which starts
  * if the permission has been granted.
  *
- * <p>Note that there is no need to check the API level, the support library
- * already takes care of this. Similar helper methods for permissions are also available in
- * ([ActivityCompat],
- * [android.support.v4.content.ContextCompat] and [android.support.v4.app.Fragment]).
  */
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private lateinit var layout: View
+
+    // Register the permissions callback, which handles the user's response to the
+    // system permissions dialog. Save the return value, an instance of
+    // ActivityResultLauncher. You can use either a val, as shown in this snippet,
+    // or a lateinit var in your onAttach() or onCreate() method.
+    private val requestPermissionLauncher =
+            registerForActivityResult(
+                    ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    // Permission has been granted. Start camera preview Activity.
+                    layout.showSnackbar(
+                            R.string.camera_permission_granted,
+                            Snackbar.LENGTH_INDEFINITE,
+                            R.string.ok
+                    ) {
+                        startCamera()
+                    }
+                } else {
+                    // Permission request was denied.
+                    layout.showSnackbar(
+                            R.string.camera_permission_denied,
+                            Snackbar.LENGTH_SHORT,
+                            R.string.ok) {}
+                }
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,35 +84,18 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         findViewById<Button>(R.id.button_open_camera).setOnClickListener { showCameraPreview() }
     }
 
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_REQUEST_CAMERA) {
-            // Request for camera permission.
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission has been granted. Start camera preview Activity.
-                layout.showSnackbar(R.string.camera_permission_granted, Snackbar.LENGTH_SHORT)
-                startCamera()
-            } else {
-                // Permission request was denied.
-                layout.showSnackbar(R.string.camera_permission_denied, Snackbar.LENGTH_SHORT)
-            }
-        }
-    }
-
     private fun showCameraPreview() {
-        // Check if the Camera permission has been granted
-        if (checkSelfPermissionCompat(Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED) {
-            // Permission is already available, start camera preview
-            layout.showSnackbar(R.string.camera_permission_available, Snackbar.LENGTH_SHORT)
-            startCamera()
-        } else {
-            // Permission is missing and must be requested.
-            requestCameraPermission()
-        }
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                layout.showSnackbar(
+                        R.string.camera_permission_available,
+                        Snackbar.LENGTH_INDEFINITE,
+                        R.string.ok
+                ) {
+                    startCamera()
+                }
+            }
+        else requestCameraPermission()
     }
 
     /**
@@ -102,22 +104,27 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
      * a SnackBar that includes additional information.
      */
     private fun requestCameraPermission() {
-        // Permission has not been granted and must be requested.
-        if (shouldShowRequestPermissionRationaleCompat(Manifest.permission.CAMERA)) {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // Display a SnackBar with a button to request the missing permission.
-            layout.showSnackbar(R.string.camera_access_required,
-                    Snackbar.LENGTH_INDEFINITE, R.string.ok) {
-                requestPermissionsCompat(arrayOf(Manifest.permission.CAMERA),
-                        PERMISSION_REQUEST_CAMERA)
+            layout.showSnackbar(
+                    R.string.camera_access_required,
+                    Snackbar.LENGTH_INDEFINITE,
+                    R.string.ok
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
-
-        } else {
-            layout.showSnackbar(R.string.camera_permission_not_available, Snackbar.LENGTH_SHORT)
-
-            // Request the permission. The result will be received in onRequestPermissionResult().
-            requestPermissionsCompat(arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_CAMERA)
+        }
+        else {
+            // You can directly ask for the permission.
+            layout.showSnackbar(
+                    R.string.camera_permission_not_available,
+                    Snackbar.LENGTH_LONG,
+                    R.string.ok
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
         }
     }
 
