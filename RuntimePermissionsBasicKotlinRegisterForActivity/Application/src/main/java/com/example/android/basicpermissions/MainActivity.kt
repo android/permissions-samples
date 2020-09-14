@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     layout.showSnackbar(
                             R.string.camera_permission_denied,
                             Snackbar.LENGTH_SHORT,
-                            R.string.ok) {}
+                            R.string.ok)
                 }
             }
 
