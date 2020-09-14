@@ -1,0 +1,36 @@
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="show_camera">Show camera preview</string>
+    <string name="camera_unavailable"><b>Camera could not be opened.</b>\nThis occurs when the camera is not available (for example it is already in use) or if the system has denied access (for example when camera access has been disabled).</string>
+    <string name="intro">This sample shows a basic implementation for requesting permissions at runtime.\nClick the button below to request the Camera permission and open a full-screen camera preview.</string>
+    <string name="open_camera_preview">Open Camera Preview</string>
+    <string name="app_name">RuntimePermissionsBasic</string>
+    <string name="intro_message"><![CDATA[
+This sample shows a basic implementation for requesting permissions at runtime. Click the button to
+request the Camera permission and open a full-screen camera preview.
+
+Note: The "RuntimePermissions" sample provides a more complete overview over the runtime permission
+features available.]]>
+    </string>
+    <string name="camera_access_required">Camera access is required to display the camera preview.</string>
+    <string name="ok">OK</string>
+    <string name="camera_permission_not_available">Permission is not available. Requesting camera permission.</string>
+    <string name="camera_permission_available">Camera permission is available. Starting preview.</string>
+    <string name="camera_permission_granted">Camera permission was granted. Starting preview.</string>
+    <string name="camera_permission_denied">Camera permission request was denied.</string>
+</resources>
