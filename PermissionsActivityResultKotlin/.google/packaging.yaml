@@ -7,7 +7,7 @@
 status:       PUBLISHED
 technologies: [Android]
 categories:   [Permissions]
-languages:    [Java]
+languages:    [Kotlin]
 solutions:    [Mobile]
 github:       android/permissions
 level:        BEGINNER
