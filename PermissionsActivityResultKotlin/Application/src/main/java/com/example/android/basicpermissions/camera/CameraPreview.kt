@@ -26,6 +26,8 @@ import com.example.android.basicpermissions.util.calculatePreviewOrientation
 
 import java.io.IOException
 
+private const val TAG = "CameraPreview"
+
 /**
  * Camera preview that displays a [Camera].
  *
@@ -93,9 +95,5 @@ class CameraPreview constructor(
             startPreview()
             Log.d(TAG, "Camera preview started.")
         }
-    }
-
-    companion object {
-        private val TAG = "CameraPreview"
     }
 }
