@@ -10,7 +10,3 @@ benchmark-repository
 # JNI Native build artifacts
 **/.externalNativeBuild
 **/.cxx
-
-RuntimePermissionsBasic/local.properties
-
-PermissionsActivityResultKotlin/local.properties
