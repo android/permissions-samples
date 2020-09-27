@@ -19,9 +19,9 @@ package com.example.android.basicpermissions.camera
 import android.hardware.Camera
 import android.os.Bundle
 import android.util.Log
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.example.android.basicpermissions.R
+import com.example.android.basicpermissions.databinding.ActivityCameraBinding
+import com.example.android.basicpermissions.databinding.ActivityCameraUnavailableBinding
 
 private const val TAG = "CameraPreviewActivity"
 private const val CAMERA_ID = 0
@@ -53,17 +53,18 @@ class CameraPreviewActivity : AppCompatActivity() {
 
         if (camera == null) {
             // Camera is not available, display error message.
-            setContentView(R.layout.activity_camera_unavailable)
+            val binding = ActivityCameraUnavailableBinding.inflate(layoutInflater)
+            setContentView(binding.root)
         } else {
-            setContentView(R.layout.activity_camera)
+            val binding = ActivityCameraBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
             // Get the rotation of the screen to adjust the preview image accordingly.
             val displayRotation = windowManager.defaultDisplay.rotation
 
             // Create the Preview view and set it as the content of this Activity.
-            val cameraPreview = CameraPreview(this, null,
-                    0, camera, cameraInfo, displayRotation)
-            findViewById<FrameLayout>(R.id.camera_preview).addView(cameraPreview)
+            val cameraPreview = CameraPreview(this, null, 0, camera, cameraInfo, displayRotation)
+            binding.cameraPreview.addView(cameraPreview)
         }
     }
 

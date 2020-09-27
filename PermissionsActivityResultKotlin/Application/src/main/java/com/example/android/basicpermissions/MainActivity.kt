@@ -21,12 +21,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.android.basicpermissions.camera.CameraPreviewActivity
+import com.example.android.basicpermissions.databinding.ActivityMainBinding
 import com.example.android.basicpermissions.util.showSnackbar
 import com.google.android.material.snackbar.Snackbar
 
@@ -47,6 +47,7 @@ import com.google.android.material.snackbar.Snackbar
  */
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var layout: View
 
     // Register the permissions callback, which handles the user's response to the
@@ -77,25 +78,27 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        layout = findViewById(R.id.main_layout)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        layout = binding.root
+
+        setContentView(layout)
 
         // Register a listener for the 'Show Camera Preview' button.
-        findViewById<Button>(R.id.button_open_camera).setOnClickListener { showCameraPreview() }
+        binding.buttonOpenCamera.setOnClickListener { showCameraPreview() }
     }
 
     private fun showCameraPreview() {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
-                layout.showSnackbar(
-                        R.string.camera_permission_available,
-                        Snackbar.LENGTH_INDEFINITE,
-                        R.string.ok
-                ) {
-                    startCamera()
-                }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            layout.showSnackbar(
+                    R.string.camera_permission_available,
+                    Snackbar.LENGTH_INDEFINITE,
+                    R.string.ok
+            ) {
+                startCamera()
             }
-        else requestCameraPermission()
+        } else requestCameraPermission()
     }
 
     /**
@@ -115,8 +118,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             ) {
                 requestPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
-        }
-        else {
+        } else {
             // You can directly ask for the permission.
             layout.showSnackbar(
                     R.string.camera_permission_not_available,
