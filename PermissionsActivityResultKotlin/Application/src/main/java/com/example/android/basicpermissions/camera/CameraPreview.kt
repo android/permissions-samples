@@ -36,7 +36,7 @@ import java.io.IOException
  * Implementation is based directly on the documentation at
  * http://developer.android.com/guide/topics/media/camera.html
  */
-class CameraPreview @JvmOverloads constructor(
+class CameraPreview constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
