@@ -77,15 +77,15 @@ class CameraPreviewActivity : AppCompatActivity() {
      * A safe way to get an instance of the Camera object.
      */
     private fun getCameraInstance(cameraId: Int): Camera? {
-        var c: Camera? = null
+        var cameraInstance: Camera? = null
         try {
-            c = Camera.open(cameraId) // attempt to get a Camera instance
+            cameraInstance = Camera.open(cameraId) // attempt to get a Camera instance
         } catch (e: Exception) {
             // Camera is not available (in use or does not exist)
             Log.e(TAG, "Camera $cameraId is not available: ${e.message}")
         }
 
-        return c // returns null if camera is unavailable
+        return cameraInstance // returns null if camera is unavailable
     }
 
     private fun releaseCamera() {
