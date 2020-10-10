@@ -3,7 +3,7 @@ Android Data Access Auditing Sample (Kotlin)
 ===========================================
 
 This sample demonstrates how to audit access to private data in your app via the data access
-auditing APIs available in the Android R and above. This is really helpful when you have a very
+auditing APIs available in the Android 11 and above. This is really helpful when you have a very
 large app or use a 3rd party library and you want to make sure it isn't accessing data in a way
 you wouldn't expect.
 
@@ -14,8 +14,8 @@ To provide more transparency into how your app and its dependencies access priva
 Android 11 introduces data access auditing. By having insights from this process, you can better
 identify and rectify potentially unexpected data access.
 
-Your app can register an instance of AppOpsManager.OnOpNotedCallback, which can perform actions each
-time one of the following events occurs:
+Your app can register an instance of `AppOpsManager.OnOpNotedCallback`, which can perform actions
+each time one of the following events occurs:
 
 - Your app's code accesses private data. To help you determine which logical part of your app
   invoked the event, you can audit data access by feature.
@@ -32,9 +32,7 @@ For more information, check out [the documentation](https://developer.android.co
 Pre-requisites
 --------------
 
-- Android SDK R
-- Android Build Tools v29.0.3
-- Android Support Repository
+- Android 11 SDK
 
 Screenshots
 -------------
