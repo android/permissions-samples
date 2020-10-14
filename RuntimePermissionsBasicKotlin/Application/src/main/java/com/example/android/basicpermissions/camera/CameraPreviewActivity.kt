@@ -18,9 +18,9 @@ package com.example.android.basicpermissions.camera
 
 import android.hardware.Camera
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.example.android.basicpermissions.R
 
 private const val TAG = "CameraPreviewActivity"
