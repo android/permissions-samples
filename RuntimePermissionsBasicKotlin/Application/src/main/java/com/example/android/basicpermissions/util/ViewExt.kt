@@ -16,8 +16,8 @@
 
 package com.example.android.basicpermissions.util
 
-import android.support.design.widget.Snackbar
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 
 fun View.showSnackbar(msgId: Int, length: Int) {
     showSnackbar(context.getString(msgId), length)

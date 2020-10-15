@@ -16,8 +16,8 @@
 
 package com.example.android.basicpermissions.util
 
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 
 fun AppCompatActivity.checkSelfPermissionCompat(permission: String) =
         ActivityCompat.checkSelfPermission(this, permission)
