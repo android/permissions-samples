@@ -1,20 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-repositories {
-    google()
-    jcenter()
-}
-
-dependencies {
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.appcompat:appcompat:1.3.0-alpha02"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10"
-    implementation "com.google.android.material:material:1.2.1"
-}
-
-List<String> dirs = ['main']
-
 android {
 
     compileSdkVersion 30
@@ -36,15 +22,8 @@ android {
     buildFeatures {
         viewBinding true
     }
+}
 
-    sourceSets {
-        main {
-            dirs.each { dir ->
-                java.srcDirs "src/${dir}/java"
-                res.srcDirs "src/${dir}/res"
-            }
-        }
-        androidTest.setRoot('tests')
-        androidTest.java.srcDirs = ['tests/src']
-    }
+dependencies {
+    implementation 'com.google.android.material:material:1.2.1'
 }
