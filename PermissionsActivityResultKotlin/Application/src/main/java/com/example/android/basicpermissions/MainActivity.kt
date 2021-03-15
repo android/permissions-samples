@@ -37,7 +37,8 @@ import com.google.android.material.snackbar.Snackbar
  * when the 'Show Camera Preview' button is clicked to start  [CameraPreviewActivity] once
  * the permission has been granted.
  *
- * <p>First, the status of the Camera permission is checked using [ContextCompat.checkSelfPermission]
+ * <p>First, the status of the Camera permission is checked using
+ * [ContextCompat.checkSelfPermission].
  * If it has not been granted ([PackageManager.PERMISSION_GRANTED]), it is requested by
  * calling [ActivityResultContracts.RequestPermission]. The result of the request is
  * returned to the
