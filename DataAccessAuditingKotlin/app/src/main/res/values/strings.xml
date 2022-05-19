@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2020 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Data Access Auditing</string>
+    <string name="default_welcome_screen_text">You must enable location permissions to see data access auditing in action.\n\nIn other words, if you don\'t have permissions, nothing is tracked.</string>
+    <string name="empty_list_screen_text">Click on a button to trigger an operation.</string>
+
+    <string name="approve_location_button_text">Approve Location Permission</string>
+
+    <string name="local_synchronous_function_button_text">Local Synchronous Function</string>
+    <string name="library_synchronous_function_button_text">External Library Synchronous Call</string>
+    <string name="library_asynchronous_function_button_text">External Library Asynchronous Call</string>
+    <string name="manually_note_operation_button_text">Manually Note an Operation (rare)</string>
+
+    <string name="location_permission_required_toast_message">Location permission needs to be granted for demo to work</string>
+    <string name="ok">Ok</string>
+</resources>

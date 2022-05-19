@@ -22,9 +22,7 @@ See the "RuntimePermissions" sample for a more complete description and referenc
 Pre-requisites
 --------------
 
-- Android SDK 28
-- Android Build Tools v28.0.3
-- Android Support Repository
+- Android SDK 30
 
 Screenshots
 -------------

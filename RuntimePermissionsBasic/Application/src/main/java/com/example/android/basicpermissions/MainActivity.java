@@ -22,14 +22,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.android.basicpermissions.camera.CameraPreviewActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * Launcher Activity that demonstrates the use of runtime permissions for Android M.
@@ -44,14 +44,14 @@ import com.example.android.basicpermissions.camera.CameraPreviewActivity;
  * calling
  * {@link ActivityCompat#requestPermissions(Activity, String[], int)}. The result of the request is
  * returned to the
- * {@link android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback}, which starts
+ * {@link androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback}, which starts
  * {@link
  * CameraPreviewActivity} if the permission has been granted.
  * <p>
  * Note that there is no need to check the API level, the support library
  * already takes care of this. Similar helper methods for permissions are also available in
  * ({@link ActivityCompat},
- * {@link android.support.v4.content.ContextCompat} and {@link android.support.v4.app.Fragment}).
+ * {@link androidx.core.content.ContextCompat} and {@link androidx.fragment.app.Fragment}).
  */
 public class MainActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
