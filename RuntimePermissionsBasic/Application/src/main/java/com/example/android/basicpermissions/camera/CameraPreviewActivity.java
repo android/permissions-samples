@@ -21,7 +21,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.example.android.basicpermissions.R;
 
@@ -62,7 +61,7 @@ public class CameraPreviewActivity extends Activity {
             setContentView(R.layout.activity_camera);
 
             // Get the rotation of the screen to adjust the preview image accordingly.
-            int displayRotation = getWindowManager().getDefaultDisplay().getRotation();
+            int displayRotation = getDisplay().getRotation();
 
             // Create the Preview view and set it as the content of this Activity.
             CameraPreview cameraPreview = new CameraPreview(this, null,
