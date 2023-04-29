@@ -46,6 +46,7 @@ fun View.showSnackbar(
     if (actionMessage != null) {
         snackbar.setAction(actionMessage) {
             action(this)
-        }.show()
+        }
     }
+    snackbar.show()
 }
